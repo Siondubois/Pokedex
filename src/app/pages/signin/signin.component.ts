@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/typings';
 
 @Component({
   selector: 'app-signin',
@@ -8,8 +10,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class SigninComponent {
   loginForm: FormGroup;
+  user?: User;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.loginForm = new FormGroup({
       email: new FormControl(),
       password: new FormControl(),
@@ -17,8 +20,17 @@ export class SigninComponent {
   }
 
   onSubmit() {
-    console.log('yuou');
-    console.log(this.loginForm);
+
+    if (!this.user) return;
+    this.user.email=this.loginForm.value.email;
+    this.user.email=this.loginForm.value.password;
+
+    this.authService.signIn(this.user)
+    .subscribe(
+      (data)=>{
+        console.log(data);
+      } 
+    )
   }
 
   get password() {
