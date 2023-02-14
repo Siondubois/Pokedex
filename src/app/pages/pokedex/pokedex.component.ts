@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Pokemon, PokemonsList } from 'src/app/typings';
 
@@ -15,13 +16,20 @@ export class PokedexComponent {
   offset: number = 0;
   limit: number = 20;
   count: number = 0;
-  numOfActivePage: number = 1;
+  currentPage: number = 1;
+  previousPage: number = 0;
+  nextPage: number = 2;
 
-  constructor (private apiService: ApiService) {
+  constructor (private apiService: ApiService, private activatedRoute: ActivatedRoute) {
+    this.currentPage = this.activatedRoute.snapshot.params['page'];
+    //this.offset = 
     this.getPokemons();
   }
 
   getPokemons() {
+    this.currentPage = 1 + this.offset / 20
+    this.previousPage = this.currentPage - 1;
+    this.nextPage = this.currentPage + 1;
     this.apiService.getPokemonsFromApi(this.offset, this.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
@@ -37,6 +45,10 @@ export class PokedexComponent {
     } else {
       this.offset += 20;
     }
+    this.currentPage = 1 + this.offset / 20
+    this.previousPage = this.currentPage - 1;
+    this.nextPage = this.currentPage + 1;
+
     this.apiService.getPokemonsFromApi(this.offset, this.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
@@ -51,6 +63,10 @@ export class PokedexComponent {
     } else {
       this.offset -= 20;
     }
+    this.currentPage = 1 + this.offset / 20
+    this.previousPage = this.currentPage - 1;
+    this.nextPage = this.currentPage + 1;
+
     this.apiService.getPokemonsFromApi(this.offset, this.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;

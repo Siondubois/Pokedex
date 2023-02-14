@@ -1,10 +1,14 @@
 <div class="container">
     <div *ngFor="let pokemon of pokemons">{{ pokemon.name }}</div>
-    <button class="btn btn-primary" (click)="getPreviousPokemonsPage()">
-        Afficher les précédents
-    </button>
-    <a href="">{{}}</a>
-    <button class="btn btn-danger" (click)="getNextPokemonsPage()">
-        Afficher les suivants
-    </button>
+    <div class="justify-content-around">
+        <button class="btn btn-primary" (click)="getPreviousPokemonsPage()">
+            page précédente
+        </button>
+        <a [routerLink]="['/pokedex', previousPage]" *ngIf="currentPage > 1">{{ previousPage }}</a>
+        <a [routerLink]="['/pokedex', currentPage]">{{ currentPage }}</a>
+        <a [routerLink]="['/pokedex', nextPage]">{{ nextPage }}</a>
+        <button class="btn btn-danger" (click)="getNextPokemonsPage()">
+            page suivante
+        </button>
+    </div>
 </div>
