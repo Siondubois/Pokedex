@@ -1,5 +1,5 @@
 <div class="container w-50 mt-4">
-    <h1>Connexion</h1>
+    <h1>Inscription</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="emailInput">Email</label>
@@ -11,9 +11,9 @@
         </div>
         <div class="text-center">
             <button class="btn btn-primary mt-4" type="submit">
-                Connectez-vous
+                Inscrivez-vous
             </button>
         </div>
     </form>
-    <a routerLink="/signin">Inscrivez-vous</a>
+    <a routerLink="/login">Déjà inscrit ? Connectez-vous !</a>
 </div>
