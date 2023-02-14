@@ -57,6 +57,19 @@ export class AuthService {
       );
   }
 
+  isUserInDB(data: any, email: string, password: string) {
+
+    let userFound = false;
+
+    data.forEach((element: any) => {
+      if (element.email === email && element.password === password) {
+        userFound=true;
+      } 
+    });
+
+    return userFound;
+  }
+
   storeIsLoggedIn(value: boolean) {
     this.storageService.setItem(AuthService.IS_LOGGED_IN, JSON.stringify(value));
   }
