@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../typings';
+import { map, tap } from 'rxjs';
+import { User, UserList, UserWithFireBaseId } from '../typings';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -8,20 +9,61 @@ import { StorageService } from './storage.service';
 })
 export class AuthService {
   static IS_LOGGED_IN = 'isLoggedIn';
-
   private apiUrl = "https://pokedex-c8855-default-rtdb.europe-west1.firebasedatabase.app";
+  
+  private _isLoggedIn = false;
+  public get isLoggedIn() {
+    return this._isLoggedIn;
+  }
+  
+  constructor(private http: HttpClient, private storageService: StorageService) { 
+    this.loadLoggedInFromStorage();
+  }
 
-  constructor(private http: HttpClient, private storageService: StorageService) { }
+  loadLoggedInFromStorage() {
+    const isLoggedInStr = this.storageService.getItem(AuthService.IS_LOGGED_IN);
+    this._isLoggedIn = isLoggedInStr ? JSON.parse(isLoggedInStr) : false;
+  }
 
   signIn(user: User) {
     return this.http.post(`${this.apiUrl}/users.json`, user);
   }
 
-  getUsers() {
-    return this.http.get(`${this.apiUrl}/users.json`);
+  login() {
+    this._isLoggedIn = true;
+    this.storeIsLoggedIn(this._isLoggedIn);
   }
 
-  storeIsLoggedIn(value: string) {
-    this.storageService.setItem(AuthService.IS_LOGGED_IN, value);
+  logout() {
+    this._isLoggedIn = false;
+    this.storeIsLoggedIn(this._isLoggedIn);
+  }
+
+  getUsers() {
+    return this.http.get(`${this.apiUrl}/users.json`)
+      .pipe(
+        map(
+          (data) => {
+            const users: UserWithFireBaseId[] = []; 
+            Object.entries(data).forEach(([id, user])=>{
+              users.push({
+                ...user,
+                id,
+              });
+            });
+            return users;
+          }
+        )
+      );
+  }
+
+  storeIsLoggedIn(value: boolean) {
+    this.storageService.setItem(AuthService.IS_LOGGED_IN, JSON.stringify(value));
+  }
+
+  isAuthenticated(): Promise<boolean> {
+    return new Promise((resolve) => {
+        resolve(this._isLoggedIn);
+    });
   }
 }

@@ -3,6 +3,12 @@ export interface User {
     password: string,
 }
 
+export interface UserWithFireBaseId {
+    id: string,
+    email: string,
+    password: string,
+}
+
 export interface UserList {
-    user: User
+    id: User,
 }

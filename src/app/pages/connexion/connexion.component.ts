@@ -26,26 +26,29 @@ export class ConnexionComponent {
   }
 
   onSubmit() {
-
     this.checkIfUserInDB();
-
   }
 
   checkIfUserInDB() {
     this.authService.getUsers()
     .subscribe(
       (data)=>{
-        console.log(Object.entries(data));
-        Object.entries(data).forEach(element => {
-          if (element[1].email === this.loginForm.value.email && element[1].password === this.loginForm.value.password) {
-            this.isLoggedIn = true;
+
+        let userFound = false;
+        
+        data.forEach(element => {
+          if (element.email === this.loginForm.value.email && element.password === this.loginForm.value.password) {
+            this.authService.login();
             this.router.navigate(['/']);
-          } else {
-            this.notInDB = true;
-          };
-        })
-      }
-    )
+            userFound = true;
+          }
+        });
+
+        if (!userFound) {
+          this.notInDB = true;
+        }
+
+      });
   }
 
   get password() {

@@ -9,13 +9,15 @@ import { HomeComponent } from './pages/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SigninComponent } from './pages/signin/signin.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConnexionComponent,
     HomeComponent,
-    SigninComponent
+    SigninComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
