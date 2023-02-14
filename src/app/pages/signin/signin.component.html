@@ -5,9 +5,15 @@
             <label for="emailInput">Email</label>
             <input class="form-control" formControlName="email" type="email" id="emailInput">
         </div>
+        <div class="invalid-feedback" *ngIf="email.touched && email.invalid && email.errors">
+            email invalide!
+        </div>
         <div class="form-group mt-2">
             <label for="passwordInput">Password</label>
             <input class="form-control" formControlName="password" type="password" id="passwordInput">
+        </div>
+        <div class="invalid-feedback" *ngIf="password.touched && password.invalid && password.errors">
+            password invalide!
         </div>
         <div class="text-center">
             <button class="btn btn-primary mt-4" type="submit">
