@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { HomeComponent } from './pages/home/home.component';
+import { PokedexComponent } from './pages/pokedex/pokedex.component';
 import { SigninComponent } from './pages/signin/signin.component';
 
 const routes: Routes = [
@@ -10,6 +11,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: 'pokedex',
+    component: PokedexComponent,
   },
   {
     path:'login',

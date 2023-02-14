@@ -12,3 +12,15 @@ export interface UserWithFireBaseId {
 export interface UserList {
     id: User,
 }
+
+export interface Pokemon {
+    name: string,
+    url: string,
+}
+
+export interface PokemonsList {
+    count: number,
+    next: string,
+    previous: string,
+    results: Pokemon[],
+}
