@@ -14,6 +14,12 @@
                 Connectez-vous
             </button>
         </div>
+        <div class="invalid-feedback">
+            <ng-container *ngIf="notInDB">
+                Vous n'avez pas de comptes, inscrivez-vous.
+            </ng-container>
+        </div>
     </form>
     <a routerLink="/signin">Inscrivez-vous</a>
+
 </div>

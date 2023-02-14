@@ -14,4 +14,9 @@ export class AuthService {
   signIn(user: User) {
     return this.http.post(`${this.apiUrl}/users.json`, user);
   }
+
+  getUsers() {
+    return this.http.get(`${this.apiUrl}/users.json`);
+  }
+
 }

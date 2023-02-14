@@ -10,7 +10,10 @@ import { User } from 'src/app/typings';
 })
 export class SigninComponent {
   loginForm: FormGroup;
-  user?: User;
+  user: User = {
+    email: '',
+    password: '',
+  };
 
   constructor(private authService: AuthService) {
     this.loginForm = new FormGroup({
@@ -21,9 +24,8 @@ export class SigninComponent {
 
   onSubmit() {
 
-    if (!this.user) return;
     this.user.email=this.loginForm.value.email;
-    this.user.email=this.loginForm.value.password;
+    this.user.password=this.loginForm.value.password;
 
     this.authService.signIn(this.user)
     .subscribe(
