@@ -12,6 +12,7 @@ export class PokedexComponent {
 
   static limit: number = 20;
 
+  maxPages: number = 0;
   pokemons?: Pokemon[];
   previousUrl?: string;
   nextUrl?: string;
@@ -28,13 +29,15 @@ export class PokedexComponent {
   }
 
   getPokemons(currentPage: number) {
-    this.offset = (currentPage - 1) * 20;
+    this.offset = (currentPage - 1) * PokedexComponent.limit;
 
     this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit)
     .subscribe(
       (data: PokemonsList) => {
+        console.log(data);
         this.pokemons = data.results;
         this.count = data.count;
+        this.maxPages = 1 + (this.count - this.count % PokedexComponent.limit) / PokedexComponent.limit;
       }
     );
   }
@@ -57,46 +60,8 @@ export class PokedexComponent {
       this.afterNextPage = this.nextPage;
       this.afterNextPage++;
 
-      console.log(this.previousPage);
       this.getPokemons(this.currentPage);
     })
   }
-
-  getNextPokemonsPage() {
-    if (this.offset >= (this.count - this.count%20)) {
-      this.offset = this.offset;
-    } else {
-      this.offset += 20;
-    }
-    this.currentPage = 1 + this.offset / 20
-    // this.previousPage = this.currentPage - 1;
-    // this.nextPage = this.currentPage + 1;
-
-    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
-      (data: PokemonsList) => {
-        this.pokemons = data.results;
-        console.log(this.offset);
-      }
-    );
-  }
-
-  getPreviousPokemonsPage() {
-    if (this.offset < 20) {
-      this.offset = 0;
-    } else {
-      this.offset -= 20;
-    }
-    this.currentPage = 1 + this.offset / 20
-    // this.previousPage = this.currentPage - 1;
-    // this.nextPage = this.currentPage + 1;
-
-    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
-      (data: PokemonsList) => {
-        this.pokemons = data.results;
-        console.log(this.offset);
-      }
-    );
-  }
-
 
 }
