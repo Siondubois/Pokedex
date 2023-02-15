@@ -19,10 +19,11 @@ export class SigninComponent {
   regExpPassword: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,}$/;
   isAlreadyInDB: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
+
+  constructor(private authService: AuthService) {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.pattern(this.regExpPassword)]),
+      password: new FormControl(null, [Validators.required, Validators.pattern(this.regExpassword)])
     })
   }
 
