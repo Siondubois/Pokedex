@@ -1,3 +1,7 @@
+$blue: rgb(13, 110, 253);
+$blue2: rgb(100, 162, 254);
+$darken-color: 10%;
+
 a {
     cursor: pointer;
     color: black;
@@ -14,7 +18,7 @@ a {
 .current-page {
     cursor: pointer;
     color: white;
-    background-color: rgb(123, 123, 248);
+    background-color: $blue;
     border-radius: 5px;
     width: 30px;
     height: 30px;
@@ -23,16 +27,13 @@ a {
     align-items: center;
 
     &:hover {
-        color: white;
-        width: 30px;
-        height: 30px;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
 }
 
 .page-index {
     cursor: pointer;
-    background-color: rgb(181, 181, 255);
+    background-color: $blue2;
     border-radius: 5px;
     width: 30px;
     height: 30px;
@@ -42,6 +43,7 @@ a {
 
     &:hover {
         color: white;
+        font-size: 1.3rem;
     }
 }
 

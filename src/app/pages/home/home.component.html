@@ -12,12 +12,12 @@
             </button>
         </div>
     </div>
-    <div class="row" *ngFor="let pokemon of pokemons; let index = index" class="">
-        <div class="col-9 pokemon-name">
-            <div>{{ pokemon.name }}</div>
+    <div class="row d-flex justify-content-start mt-4 align-items-center pokemon-item" *ngFor="let pokemon of pokemons; let index = index">
+        <div class="col-9">
+            <div class=" pokemon-name text-primary">{{ pokemon.name }}</div>
         </div>
         <div class="col-3">
-            <button class="btn btn-primary" (click)="deletePokemon(index)">
+            <button class="btn btn-danger" (click)="deletePokemon(index)">
                 Supprimer
             </button>
         </div>
