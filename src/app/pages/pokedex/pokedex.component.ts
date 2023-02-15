@@ -10,11 +10,12 @@ import { Pokemon, PokemonsList } from 'src/app/typings';
 })
 export class PokedexComponent {
 
+  static limit: number = 20;
+
   pokemons?: Pokemon[];
   previousUrl?: string;
   nextUrl?: string;
   offset: number = 0;
-  limit: number = 20;
   count: number = 0;
   currentPage: number = 1;
   previousPage: number = 0;
@@ -22,15 +23,28 @@ export class PokedexComponent {
 
   constructor (private apiService: ApiService, private activatedRoute: ActivatedRoute) {
     this.currentPage = this.activatedRoute.snapshot.params['page'];
-    //this.offset = 
-    this.getPokemons();
+    this.getPokemonsByPage(this.currentPage);
   }
 
   getPokemons() {
     this.currentPage = 1 + this.offset / 20
     this.previousPage = this.currentPage - 1;
     this.nextPage = this.currentPage + 1;
-    this.apiService.getPokemonsFromApi(this.offset, this.limit).subscribe(
+    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
+      (data: PokemonsList) => {
+        this.pokemons = data.results;
+        this.count = data.count;
+        console.log(this.offset);
+      }
+    );
+  }
+
+  getPokemonsByPage(page: number) {
+    this.offset = (page - 1) * 20;
+    console.log(this.offset);
+    this.previousPage = this.currentPage - 1;
+    this.nextPage = (this.currentPage + 1);
+    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
         this.count = data.count;
@@ -49,7 +63,7 @@ export class PokedexComponent {
     this.previousPage = this.currentPage - 1;
     this.nextPage = this.currentPage + 1;
 
-    this.apiService.getPokemonsFromApi(this.offset, this.limit).subscribe(
+    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
         console.log(this.offset);
@@ -67,7 +81,7 @@ export class PokedexComponent {
     this.previousPage = this.currentPage - 1;
     this.nextPage = this.currentPage + 1;
 
-    this.apiService.getPokemonsFromApi(this.offset, this.limit).subscribe(
+    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
         console.log(this.offset);

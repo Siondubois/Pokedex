@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concatMap, map, of } from 'rxjs';
+import { concatMap, map, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/app/typings';
+import { User, UserWithFireBaseId } from 'src/app/typings';
 
 @Component({
   selector: 'app-signin',
@@ -36,10 +36,15 @@ export class SigninComponent {
     this.checkIfUserInDB()
     .pipe(
       concatMap(
-        () => {
-          if(this.isAlreadyInDB) {
+        (userFound: boolean) => {
+          if (userFound) {
+            this.isAlreadyInDB = true;
+
             return of();
           } else {
+            this.authService.login();
+            this.router.navigate(['/']);
+
             return this.authService.signIn(this.user);
           }          
         }
@@ -52,16 +57,10 @@ export class SigninComponent {
     return this.authService.getUsers()
     .pipe(
       map(
-        (data: any)=>{
-
+        (data: UserWithFireBaseId[])=>{
           let userFound = this.authService.isUserInDB(data, this.loginForm.value.email, this.loginForm.value.password);
-            
-          if (userFound) {
-            this.isAlreadyInDB = true;
-          } else {
-            this.authService.login();
-            this.router.navigate(['/']);
-          }
+
+          return userFound;
         }
       )
     )

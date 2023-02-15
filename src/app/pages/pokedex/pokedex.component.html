@@ -1,12 +1,12 @@
 <div class="container">
     <div *ngFor="let pokemon of pokemons">{{ pokemon.name }}</div>
-    <div class="justify-content-around">
+    <div class="d-flex justify-content-around">
         <button class="btn btn-primary" (click)="getPreviousPokemonsPage()">
             page précédente
         </button>
-        <a [routerLink]="['/pokedex', previousPage]" *ngIf="currentPage > 1">{{ previousPage }}</a>
-        <a [routerLink]="['/pokedex', currentPage]">{{ currentPage }}</a>
-        <a [routerLink]="['/pokedex', nextPage]">{{ nextPage }}</a>
+        <a (click)="getPokemonsByPage(previousPage)" *ngIf="currentPage > 1">{{ previousPage }}</a>
+        <a>{{ currentPage }}</a>
+        <a (click)="getNextPokemonsPage()">{{ nextPage }}</a>
         <button class="btn btn-danger" (click)="getNextPokemonsPage()">
             page suivante
         </button>

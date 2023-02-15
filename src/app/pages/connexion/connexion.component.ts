@@ -16,7 +16,7 @@ export class ConnexionComponent {
     password: '',
   };
   isLoggedIn = false;
-  notInDB = false;
+  isNotInDB = false;
 
   constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
@@ -31,7 +31,7 @@ export class ConnexionComponent {
 
   checkIfUserInDB() {
 
-    this.notInDB = false;
+    this.isNotInDB = false;
 
     this.authService.getUsers()
     .subscribe(
@@ -43,7 +43,7 @@ export class ConnexionComponent {
           this.authService.login();
           this.router.navigate(['/']);
         } else {
-          this.notInDB = true;
+          this.isNotInDB = true;
         }
     });
   }
