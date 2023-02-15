@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { concatMap, map, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/app/typings';
+import { User, UserWithFireBaseId } from 'src/app/typings';
 
 @Component({
   selector: 'app-signin',
@@ -14,8 +16,9 @@ export class SigninComponent {
     email: '',
     password: '',
   };
+  regExpPassword: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,}$/;
+  isAlreadyInDB: boolean = false;
 
-  regExpassword: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$/
 
   constructor(private authService: AuthService) {
     this.loginForm = new FormGroup({
@@ -26,14 +29,41 @@ export class SigninComponent {
 
   onSubmit() {
 
-    this.user.email=this.loginForm.value.email;
-    this.user.password=this.loginForm.value.password;
+    this.isAlreadyInDB = false;
 
-    this.authService.signIn(this.user)
-    .subscribe(
-      (data)=>{
-        console.log(data);
-      } 
+    this.user.email = this.loginForm.value.email;
+    this.user.password = this.loginForm.value.password;
+
+    this.checkIfUserInDB()
+    .pipe(
+      concatMap(
+        (userFound: boolean) => {
+          if (userFound) {
+            this.isAlreadyInDB = true;
+
+            return of();
+          } else {
+            this.authService.login();
+            this.router.navigate(['/']);
+
+            return this.authService.signIn(this.user);
+          }          
+        }
+      )
+    )
+    .subscribe();
+  }
+
+  checkIfUserInDB() {
+    return this.authService.getUsers()
+    .pipe(
+      map(
+        (data: UserWithFireBaseId[])=>{
+          let userFound = this.authService.isUserInDB(data, this.loginForm.value.email, this.loginForm.value.password);
+
+          return userFound;
+        }
+      )
     )
   }
 

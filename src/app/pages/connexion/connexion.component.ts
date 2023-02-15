@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/typings';
@@ -16,12 +16,12 @@ export class ConnexionComponent {
     password: '',
   };
   isLoggedIn = false;
-  notInDB = false;
+  isNotInDB = false;
 
   constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
-      email: new FormControl(),
-      password: new FormControl(),
+      email: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
     })
   }
 
@@ -30,25 +30,22 @@ export class ConnexionComponent {
   }
 
   checkIfUserInDB() {
+
+    this.isNotInDB = false;
+
     this.authService.getUsers()
     .subscribe(
       (data)=>{
 
-        let userFound = false;
-        
-        data.forEach(element => {
-          if (element.email === this.loginForm.value.email && element.password === this.loginForm.value.password) {
-            this.authService.login();
-            this.router.navigate(['/']);
-            userFound = true;
-          }
-        });
+        let userFound = this.authService.isUserInDB(data, this.loginForm.value.email, this.loginForm.value.password);
 
-        if (!userFound) {
-          this.notInDB = true;
+        if (userFound) {
+          this.authService.login();
+          this.router.navigate(['/']);
+        } else {
+          this.isNotInDB = true;
         }
-
-      });
+    });
   }
 
   get password() {
