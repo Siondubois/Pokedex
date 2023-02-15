@@ -13,7 +13,7 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'pokedex',
+    path: 'pokedex/:page',
     component: PokedexComponent,
   },
   {
