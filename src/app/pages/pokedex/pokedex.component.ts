@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Pokemon, PokemonsList } from 'src/app/typings';
 
@@ -20,22 +20,46 @@ export class PokedexComponent {
   currentPage: number = 1;
   previousPage: number = 0;
   nextPage: number = 2;
+  afterNextPage: number = 3;
+  beforePreviousPage: number = 0;
 
-  constructor (private apiService: ApiService, private activatedRoute: ActivatedRoute) {
-    this.getPokemons();
+  constructor (private apiService: ApiService, private activatedRoute: ActivatedRoute, private router: Router) {
+    this.handlePageParams();
   }
 
-  getPokemons() {
-    this.currentPage = 1 + this.offset / 20
-    this.previousPage = this.currentPage - 1;
-    this.nextPage = this.currentPage + 1;
-    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
+  getPokemons(currentPage: number) {
+    this.offset = (currentPage - 1) * 20;
+
+    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit)
+    .subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
         this.count = data.count;
-        console.log(this.offset);
       }
     );
+  }
+
+  toPage(page: number) {
+    this.router.navigate(['/pokedex', page]);
+  }
+
+  handlePageParams() {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      const pageIndexStr = params['page'];
+      this.currentPage = parseInt(pageIndexStr);
+
+      this.previousPage = this.currentPage - 1;
+      this.beforePreviousPage = this.currentPage - 2;
+
+      this.nextPage = this.currentPage;
+      this.nextPage++;
+
+      this.afterNextPage = this.nextPage;
+      this.afterNextPage++;
+
+      console.log(this.previousPage);
+      this.getPokemons(this.currentPage);
+    })
   }
 
   getNextPokemonsPage() {
@@ -45,8 +69,8 @@ export class PokedexComponent {
       this.offset += 20;
     }
     this.currentPage = 1 + this.offset / 20
-    this.previousPage = this.currentPage - 1;
-    this.nextPage = this.currentPage + 1;
+    // this.previousPage = this.currentPage - 1;
+    // this.nextPage = this.currentPage + 1;
 
     this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
       (data: PokemonsList) => {
@@ -63,8 +87,8 @@ export class PokedexComponent {
       this.offset -= 20;
     }
     this.currentPage = 1 + this.offset / 20
-    this.previousPage = this.currentPage - 1;
-    this.nextPage = this.currentPage + 1;
+    // this.previousPage = this.currentPage - 1;
+    // this.nextPage = this.currentPage + 1;
 
     this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
       (data: PokemonsList) => {
@@ -73,4 +97,6 @@ export class PokedexComponent {
       }
     );
   }
+
+
 }
