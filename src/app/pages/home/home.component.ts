@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,20 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HomeComponent {
   currentPokemonName='';
+  tablepokemon:any = [];
 
-  constructor(
-    public authService: AuthService,
-  ) {
+  constructor(private databseService: DatabaseService) {
     
+  }
+
+
+
+  addPokemon(){
+    console.log(this.currentPokemonName)
+    this.databseService.postPokemon(this.currentPokemonName).subscribe(
+      (data)=>{
+        console.log(data);
+      }
+    );
   }
 }
