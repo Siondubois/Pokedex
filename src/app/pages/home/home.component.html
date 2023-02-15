@@ -7,10 +7,11 @@
             <input class="form-control" [(ngModel)]="currentPokemonName" type="text">
         </div>
         <div class="col-3">
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" (click)="addPokemon()">
                 Ajouter un Pokémon
             </button>
         </div>
+        <div *ngFor="let pokemon of tablepokemon" >{{pokemon}}</div>
     </div>
 
 </div>
