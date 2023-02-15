@@ -22,6 +22,11 @@ export interface PokemonName {
     name: string;
 }
 
+export interface PokemonNameWithId {
+    name: string;
+    id: string,
+}
+
 export interface PokemonsList {
     count: number,
     next: string,

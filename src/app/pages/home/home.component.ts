@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { concatMap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
-import { Pokemon, PokemonName } from 'src/app/typings';
+import { Pokemon, PokemonName, PokemonNameWithId } from 'src/app/typings';
 
 @Component({
   selector: 'app-home',
@@ -14,17 +15,47 @@ export class HomeComponent {
   pokemon: PokemonName = {
     name: '',
   };
+  pokemons: PokemonNameWithId[] = [];
 
-  constructor(private databaseService: DatabaseService) {}
+  constructor(private databaseService: DatabaseService) {
+    this.getPokemonsList();
+  }
 
   addPokemon(){
 
     this.pokemon.name = this.currentPokemonName;
 
-    this.databaseService.postPokemon(this.pokemon).subscribe(
-      (data)=>{
-        console.log(data);
-      }
-    );
+    this.databaseService.postPokemon(this.pokemon)
+    .pipe(
+      concatMap(
+        () => {
+          return this.databaseService.getPokemonsList();
+        }
+      )
+    )
+    .subscribe((pokemons) => {
+      this.pokemons = pokemons;
+    });
+  }
+
+  getPokemonsList() {
+    this.databaseService.getPokemonsList()
+    .subscribe((pokemons) => {
+      this.pokemons = pokemons;
+    });
+  }
+
+  deletePokemon(index: number) {
+    this.databaseService.deletePokemon(index, this.pokemons)
+    .pipe(
+      concatMap(
+        () => {
+          return this.databaseService.getPokemonsList();
+        }
+      )
+    )
+    .subscribe((pokemons) => {
+      this.pokemons = pokemons;
+    });
   }
 }

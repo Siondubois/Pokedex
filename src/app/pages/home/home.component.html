@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="container mt-4">
-    <h1>Pokémons</h1>
+    <h1>Mes Pokémons</h1>
     
     <div class="row">
         <div class="col-9">
@@ -11,7 +11,16 @@
                 Ajouter un Pokémon
             </button>
         </div>
-        <div></div>
+    </div>
+    <div class="row" *ngFor="let pokemon of pokemons; let index = index" class="">
+        <div class="col-9 pokemon-name">
+            <div>{{ pokemon.name }}</div>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-primary" (click)="deletePokemon(index)">
+                Supprimer
+            </button>
+        </div>
     </div>
 
 </div>
