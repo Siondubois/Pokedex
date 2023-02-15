@@ -22,28 +22,13 @@ export class PokedexComponent {
   nextPage: number = 2;
 
   constructor (private apiService: ApiService, private activatedRoute: ActivatedRoute) {
-    this.currentPage = this.activatedRoute.snapshot.params['page'];
-    this.getPokemonsByPage(this.currentPage);
+    this.getPokemons();
   }
 
   getPokemons() {
     this.currentPage = 1 + this.offset / 20
     this.previousPage = this.currentPage - 1;
     this.nextPage = this.currentPage + 1;
-    this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
-      (data: PokemonsList) => {
-        this.pokemons = data.results;
-        this.count = data.count;
-        console.log(this.offset);
-      }
-    );
-  }
-
-  getPokemonsByPage(page: number) {
-    this.offset = (page - 1) * 20;
-    console.log(this.offset);
-    this.previousPage = this.currentPage - 1;
-    this.nextPage = (this.currentPage + 1);
     this.apiService.getPokemonsFromApi(this.offset, PokedexComponent.limit).subscribe(
       (data: PokemonsList) => {
         this.pokemons = data.results;
