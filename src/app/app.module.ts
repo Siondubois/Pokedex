@@ -11,6 +11,7 @@ import { SigninComponent } from './pages/signin/signin.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PokedexComponent } from './pages/pokedex/pokedex.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PokedexComponent } from './pages/pokedex/pokedex.component';
     HomeComponent,
     SigninComponent,
     NavbarComponent,
-    PokedexComponent
+    PokedexComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { UnAuthGuard } from './guards/un-auth.guard';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PokedexComponent } from './pages/pokedex/pokedex.component';
 import { SigninComponent } from './pages/signin/signin.component';
 
@@ -27,7 +28,16 @@ const routes: Routes = [
     canActivate: [UnAuthGuard],
     path:'signup',
     component: SigninComponent,
+  },
+  {
+    path:'not-found',
+    component: NotFoundComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
   }
+  
 ];
 
 @NgModule({
