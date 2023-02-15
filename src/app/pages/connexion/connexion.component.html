@@ -1,0 +1,35 @@
+<div class="container w-50 mt-4">
+    <h1>Connexion</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="emailInput">Email</label>
+            <input class="form-control" formControlName="email" type="email" id="emailInput">
+        </div>
+        <div class="invalid-feedback" *ngIf="email.touched && email.invalid && email.errors">
+            <ng-container *ngIf="email.errors['required']">
+                L'email ne peut pas être vide
+            </ng-container>
+        </div>
+        <div class="form-group mt-2">
+            <label for="passwordInput">Password</label>
+            <input class="form-control" formControlName="password" type="password" id="passwordInput">
+        </div>
+        <div class="invalid-feedback" *ngIf="password.touched && password.invalid && password.errors">
+            <ng-container *ngIf="password.errors['required']">
+                Le mot de passe ne peut pas être vide
+            </ng-container>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary mt-4" type="submit">
+                Connectez-vous
+            </button>
+        </div>
+        <div class="invalid-feedback" *ngIf="password.touched">
+            <ng-container *ngIf="isNotInDB">
+                Identifiants erronés.
+            </ng-container>
+        </div>
+    </form>
+    <a routerLink="/signin">Inscrivez-vous</a>
+
+</div>

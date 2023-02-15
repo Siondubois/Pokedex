@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="row mt-4">
+        <h2>Liste mondiale des Pokémons</h2>
+        <div class="col-12 pokemon-list mt-4 mb-4">
+            <div *ngFor="let pokemon of pokemons; let index = index" [ngClass]="{'grey-plus' : index % 2 === 0}" class="pokemon pl-4 d-flex align-items-center justify-content-center">{{ pokemon.name | uppercase }}</div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="page-index m-4" (click)="toPage(beforePreviousPage)" *ngIf="beforePreviousPage > 0">{{ beforePreviousPage }}</div>
+        <div class="page-index m-4" (click)="toPage(previousPage)" *ngIf="previousPage > 0">{{ previousPage }}</div>
+        <div class="current-page m-4" (click)="toPage(currentPage)">{{ currentPage }}</div>
+        <div class="page-index m-4" (click)="toPage(nextPage)" *ngIf="nextPage <= maxPages">{{ nextPage }}</div>
+        <div class="page-index m-4" (click)="toPage(afterNextPage)" *ngIf="afterNextPage <= maxPages">{{ afterNextPage }}</div>
+    </div>
+</div>
