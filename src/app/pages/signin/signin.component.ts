@@ -20,10 +20,10 @@ export class SigninComponent {
   isAlreadyInDB: boolean = false;
 
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.pattern(this.regExpassword)])
+      password: new FormControl(null, [Validators.required, Validators.pattern(this.regExpPassword)])
     })
   }
 
