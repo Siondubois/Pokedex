@@ -18,6 +18,10 @@ export interface Pokemon {
     url: string,
 }
 
+export interface PokemonName {
+    name: string;
+}
+
 export interface PokemonsList {
     count: number,
     next: string,
